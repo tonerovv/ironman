@@ -433,10 +433,11 @@ scene.add(new THREE.AmbientLight(0xffffff, .15));
 // форма шлема: из точки на сфере делаем точку на поверхности шлема
 function shape(v, P) {
   const len = v.length(); let x = v.x / len, y = v.y / len, z = v.z / len;
-  x *= .88; z *= .96; if (y > 0) y *= .94;
-  if (y < 0) { const t = Math.min(1, -y); const tp = 1 - (P.jaw ?? .28) * t * t; x *= tp; z = z > 0 ? z * (1 - .1 * t * t) + .1 * t * t : z * tp; y *= 1.1; }
-  if (z < 0) { z *= 1.06; y += .04 * -z; }
-  if (P.boxy) { const m = Math.max(Math.abs(x) / .84, Math.abs(y), Math.abs(z)) || 1; const b = P.boxy; x = x * (1 - b) + x / m * .92 * b; y = y * (1 - b) + y / m * .92 * b; z = z * (1 - b) + z / m * .92 * b; }
+  x *= .82; z *= 1.0; if (y > 0) { y *= .92; x *= 1 - .08 * y; }
+  if (y < 0) { const t = Math.min(1, -y); const tp = 1 - (P.jaw ?? .32) * t * t; x *= tp; z = z > 0 ? z * (1 - .05 * t) + .16 * t * t : z * tp * .95; y *= 1.12; }
+  if (z < 0) { z *= 1.1; y += .06 * -z; }
+  if (z > 0) x *= 1 - .1 * z * z;                         // лицо уже затылка, профиль клином
+  if (P.boxy) { const m = Math.max(Math.abs(x) / .82, Math.abs(y), Math.abs(z)) || 1; const b = P.boxy; x = x * (1 - b) + x / m * .9 * b; y = y * (1 - b) + y / m * .9 * b; z = z * (1 - b) + z / m * .9 * b; }
   v.set(x * len, y * len, z * len); return v;
 }
 function bend(geo, P, fn) {
@@ -457,43 +458,54 @@ const haloM = c => new THREE.MeshBasicMaterial({ color: c, transparent: true, op
 function surf(P, az, el, r) { return shape(new THREE.Vector3(r * Math.cos(el) * Math.sin(az), r * Math.sin(el), r * Math.cos(el) * Math.cos(az)), P); }
 
 function buildHelmet(P) {
-  const g = new THREE.Group(), main = metal(P.main), face = metal(P.face, .22), trim = metal(P.trim, .3), dark = metal("#141416", .45);
+  // авторский шлем из граненых пластин брони
+  const g = new THREE.Group(), facet = m => m;
+  const main = facet(metal(P.main)), face = facet(metal(P.face, .22)), trim = facet(metal(P.trim, .3)), dark = facet(metal("#141416", .5)), glass = metal("#07080a", .06), gun = metal("#2b2e34", .32);
   const add = (geo, m) => { const o = new THREE.Mesh(geo, m); g.add(o); return o; };
-  add(bend(new THREE.SphereGeometry(1, 128, 96), P), main);                       // корпус
-  add(bend(front(1.026, 1.05, -.95, -.32, 64), P), face);                           // дыхательный блок
-  for (let k = 0; k < 4; k++) add(bend(front(1.04, .7 - k * .08, -.5 - k * .1, -.47 - k * .1, 32), P), dark); // решётка
-  add(bend(front(1.022, 1.2, .3, .62, 64), P, (a, e) => [a * (1 + (e - .3) * .6), e]), face); // лобная пластина
-  add(bend(front(1.035, .16, .62, 1.5, 16), P), trim);                             // гребень спереди
-  add(bend(new THREE.SphereGeometry(1.035, 4, 32, -Math.PI / 2 - .08, .16, .05, 1.6), P), trim); // гребень сзади
-  add(bend(front(1.03, .22, -1.3, -.7, 24), P), trim);                             // подбородок
-  // визор
-  const V = P.visor || "band", vis = [];
-  // тёмное стекло под визором
-  add(bend(front(1.038, 2.25, .03, .3), P, V === "v" ? (a, e) => [a, e + Math.abs(a) * .2 - .06] : null), metal("#08090b", .08));
-  if (V === "band") vis.push(front(1.05, 1.9, .13, .18));
-  if (V === "v") vis.push(front(1.05, 2.0, .12, .17));
-  if (V === "triple") [.07, .145, .22].forEach(e => vis.push(front(1.05, 1.9 - e, e, e + .03)));
-  if (V === "grill") [.06, .12, .18, .24].forEach(e => vis.push(front(1.05, 1.4, e, e + .025, 48)));
-  const bendV = V === "v" ? (a, e) => [a, e + Math.abs(a) * .2 - .06] : null;
-  vis.forEach(v => { add(bend(v, P, bendV), glowM(P.eye));
-    const h = bend(v.clone(), P, bendV); h.scale(1.025, 1.06, 1.025); add(h, haloM(P.eye)); });
-  // вентиляция на скулах
-  for (const s of [-1, 1]) for (let k = 0; k < 3; k++) {
-    const m = add(new THREE.BoxGeometry(.2, .028, .05), dark);
-    m.position.copy(surf(P, s * (.5 + k * .05), -.42 - k * .09, 1.035)); m.lookAt(m.position.clone().multiplyScalar(2)); m.rotateZ(s * -.35);
-  }
-  // боковые диски со светящимся кольцом
+  const sph = (r, a0, a1, e0, e1, ws = 64, hs = 24) => new THREE.SphereGeometry(r, ws, hs, Math.PI / 2 - a1, a1 - a0, Math.PI / 2 - e1, e1 - e0);
+  add(bend(new THREE.SphereGeometry(1, 128, 96), P), main);                               // корпус (грани)
+  add(bend(new THREE.SphereGeometry(.985, 64, 48), P), dark);                           // подложка, видна в щелях
+  // нависающий лоб с острым мысом по центру
+  add(bend(sph(1.075, -1.25, 1.25, .26, .62, 96, 16), P, (a, e) => [a, e + (e < .4 ? (.12 - Math.abs(a) * .1) * (1 - (e - .26) / .14) : 0) - .02]), face);
+  add(bend(sph(1.09, -.09, .09, .3, 1.45, 4, 48), P), trim);                            // гребень спереди
+  add(bend(new THREE.SphereGeometry(1.06, 4, 20, -Math.PI / 2 - .09, .18, .1, 1.7), P), trim); // гребень сзади
+  // визор, обёрнутый вокруг лица
+  const V = P.visor || "band", vk = V === "v" ? (a, e) => [a, e + Math.abs(a) * .18 - .05] : null;
+  add(bend(sph(1.045, -1.3, 1.3, .02, .27, 48, 4), P, vk), glass);
+  const vis = [];
+  if (V === "band" || V === "v") vis.push(sph(1.055, -1.05, 1.05, .12, .165, 48, 2));
+  if (V === "triple") [.06, .125, .19].forEach(e => vis.push(sph(1.055, -.95 + e, .95 - e, e, e + .028, 40, 2)));
+  if (V === "grill") [.05, .1, .15, .2].forEach(e => vis.push(sph(1.055, -.7, .7, e, e + .02, 32, 2)));
+  vis.forEach(v => { add(bend(v, P, vk), glowM(P.eye)); const h = bend(v.clone(), P, vk); h.scale(1.02, 1.08, 1.02); add(h, haloM(P.eye)); });
+  // щёчные пластины
   for (const s of [-1, 1]) {
-    const pos = surf(P, s * Math.PI / 2, -.06, 1.0), o = new THREE.Group(); o.position.copy(pos);
-    o.lookAt(pos.clone().multiplyScalar(2));
-    const d = new THREE.Mesh(new THREE.CylinderGeometry(.24, .27, .09, 48), trim); d.rotation.x = Math.PI / 2; o.add(d);
-    const r = new THREE.Mesh(new THREE.TorusGeometry(.15, .016, 12, 64), glowM(P.eye)); r.position.z = .05; o.add(r);
-    const c = new THREE.Mesh(new THREE.CylinderGeometry(.09, .09, .1, 32), dark); c.rotation.x = Math.PI / 2; o.add(c);
-    g.add(o);
+    const a0 = s > 0 ? .45 : -1.5, a1 = s > 0 ? 1.5 : -.45;
+    add(bend(sph(1.06, a0, a1, -.78, -.02, 48, 32), P, (a, e) => [a, e - (Math.abs(a) - .45) * .12]), gun);
+    for (let k = 0; k < 3; k++) {                                                        // прорези на щеках
+      const m = add(new THREE.BoxGeometry(.2, .022, .06), dark);
+      m.position.copy(surf(P, s * (.78 + k * .14), -.32 - k * .05, 1.08)); m.lookAt(m.position.clone().multiplyScalar(2)); m.rotateZ(s * .5);
+    }
   }
+  // дыхательный блок, выступает вперёд клином
+  const snout = bend(sph(1.075, -.42, .42, -.95, -.3, 48, 32), P, (a, e) => [a * (1 - (-.3 - e) * .35), e]);
+  add(snout, gun);
+  for (let k = 0; k < 5; k++) add(bend(sph(1.09, -.3 + k * .02, .3 - k * .02, -.45 - k * .09, -.435 - k * .09, 24, 1), P), k % 2 ? dark : glowM(P.eye));
+  add(bend(sph(1.06, -.16, .16, -1.32, -.95, 24, 16), P), trim);                          // подбородок
+  // боковые модули с кольцом и плавником назад
+  for (const s of [-1, 1]) {
+    const pos = surf(P, s * Math.PI / 2, -.02, 1.0), o = new THREE.Group(); o.position.copy(pos); o.lookAt(pos.clone().multiplyScalar(2));
+    const d = new THREE.Mesh(new THREE.CylinderGeometry(.23, .28, .12, 48), trim); d.rotation.x = Math.PI / 2; o.add(d);
+    const r = new THREE.Mesh(new THREE.TorusGeometry(.14, .016, 8, 48), glowM(P.eye)); r.position.z = .065; o.add(r);
+    const c = new THREE.Mesh(new THREE.CylinderGeometry(.08, .08, .14, 8), dark); c.rotation.x = Math.PI / 2; o.add(c);
+    g.add(o);
+    const fin = new THREE.Mesh(new THREE.BoxGeometry(.05, .12, .5), trim);
+    fin.position.copy(surf(P, s * 1.95, .12, 1.03)); fin.rotation.set(-.35, s * -.25, 0); g.add(fin);
+  }
+  // пластины на затылке
+  for (let k = 0; k < 3; k++) add(new THREE.SphereGeometry(1.03 + k * .012, 20, 2, -Math.PI / 2 - .9 + k * .1, 1.8 - k * .2, Math.PI / 2 + .2 + k * .22, .16).applyMatrix4(new THREE.Matrix4()), trim).geometry = bend(new THREE.SphereGeometry(1.03 + k * .012, 20, 2, -Math.PI / 2 - .9 + k * .1, 1.8 - k * .2, Math.PI / 2 + .2 + k * .22, .16), P);
   // шея
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(.42, .5, .3, 64, 1, true), dark); neck.position.y = -1.0; g.add(neck);
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(.46, .025, 12, 80), trim); ring.rotation.x = Math.PI / 2; ring.position.y = -.88; g.add(ring);
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(.42, .52, .32, 64, 1, true), dark); neck.position.y = -1.02; g.add(neck);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(.47, .03, 12, 80), trim); ring.rotation.x = Math.PI / 2; ring.position.y = -.9; g.add(ring);
   return g;
 }
 
