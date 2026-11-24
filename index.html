@@ -74,32 +74,74 @@ h2{font-family:Unbounded;font-weight:800;font-size:clamp(34px,6vw,80px);line-hei
 .stats b{display:block;font-family:Unbounded;font-size:28px;font-weight:600}
 .stats span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 
-/* ВИТРИНА */
-.show{min-height:100svh;display:grid;grid-template-columns:minmax(300px,440px) 1fr;align-items:center;padding-top:90px;padding-bottom:40px;overflow:hidden}
-.show .mega2{right:-2vw;top:50%;transform:translateY(-50%);font-family:Unbounded;font-weight:800;font-size:clamp(70px,15vw,250px);line-height:.85;color:transparent;
-  -webkit-text-stroke:1.5px rgba(255,255,255,.1);text-align:right;white-space:nowrap;transition:opacity .4s}
-.info .num{font-family:Unbounded;font-size:13px;color:var(--muted);letter-spacing:.12em}
-.info h3{font-family:Unbounded;font-weight:800;font-size:clamp(38px,5vw,64px);line-height:1;margin:10px 0 6px;text-transform:uppercase}
-.info .film{font-size:14px;color:var(--acc2);font-weight:700;transition:color 1s}
-.info p{color:#c9c5c0;font-size:15.5px;margin:18px 0 22px;min-height:96px}
-.swatch{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
-.swatch i{width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,.2)}
-.ctrl{display:flex;gap:10px;margin-top:22px}
-.ctrl button{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);cursor:pointer;display:grid;place-items:center;transition:.25s}
-.ctrl button:hover{background:var(--acc);border-color:var(--acc)}
-.ctrl svg{width:20px;height:20px}
-.fade{animation:fd .55s cubic-bezier(.2,.7,.2,1)}
-@keyframes fd{from{opacity:0;transform:translateY(14px);filter:blur(6px)}}
-.drag{position:absolute;right:clamp(16px,5vw,64px);bottom:120px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);z-index:2}
-.stage{height:70vh;cursor:grab;touch-action:pan-y}
+/* ГАЛЕРЕЯ БРОНЕЙ */
+.gal{padding-top:14vh;padding-bottom:6vh}
+.gal-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.gal-head p{max-width:380px;color:#bdb9b4;font-size:15px}
+.arrows{display:flex;gap:10px}
+.arrows button{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);cursor:pointer;display:grid;place-items:center;transition:.25s}
+.arrows button:hover{background:var(--acc);border-color:var(--acc)}
+.arrows svg{width:20px;height:20px}
+.track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:34px clamp(16px,5vw,64px) 20px;scrollbar-width:none;margin:0 calc(-1 * clamp(16px,5vw,64px))}
+.track::-webkit-scrollbar{display:none}
+.mk{flex:none;width:min(320px,78vw);scroll-snap-align:center;position:relative;border-radius:26px;padding:22px;background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.015));
+  border:1px solid var(--line);overflow:hidden;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s,opacity 1s}
+.mk:hover{border-color:color-mix(in srgb,var(--c1) 70%,transparent)}
+.mk:before{content:"";position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;background:radial-gradient(var(--c1),transparent 65%);opacity:.35;transition:opacity .4s}
+.mk:hover:before{opacity:.6}
+.mk .big{position:relative;height:190px;display:grid;place-items:center;font-family:Unbounded;font-weight:800;font-size:120px;line-height:1;color:transparent;
+  -webkit-text-stroke:1.5px color-mix(in srgb,var(--c2) 80%,#fff);text-shadow:0 0 40px color-mix(in srgb,var(--c3) 40%,transparent)}
+.mk .big img{max-width:100%;max-height:190px;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
+.mk h3{position:relative;font-family:Unbounded;font-size:22px;margin-top:8px}
+.mk .fl{position:relative;font-size:13px;color:var(--acc2);font-weight:700;margin-top:4px}
+.mk p{position:relative;font-size:14px;color:#bdb9b4;margin:12px 0 16px;min-height:105px}
+.mk .row{position:relative;display:flex;align-items:center;justify-content:space-between}
+.dots{display:flex;gap:6px}.dots i{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,.2)}
+.mk button{border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.25s}
+.mk button:hover{background:var(--c1);border-color:var(--c1)}
+.gal-bar{height:2px;background:var(--line);border-radius:2px;overflow:hidden}
+.gal-bar i{display:block;height:100%;width:20%;background:var(--acc);transition:width .2s,background 1s}
+
+/* КАСТОМАЙЗЕР */
+.forge{padding-top:12vh;padding-bottom:8vh}
+.fgrid{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:30px;align-items:stretch;margin-top:30px}
+.panel{padding:22px;border-radius:24px;background:rgba(12,12,16,.72);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:18px}
+.panel label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{min-width:44px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-family:Unbounded;font-size:12px;cursor:pointer;transition:.2s}
+.chips button:hover{border-color:rgba(255,255,255,.35)}
+.chips button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.numin{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:13px;color:var(--muted)}
+.panel input[type=number],.panel input[type=text]{flex:1;min-width:0;width:100%;font:inherit;font-size:15px;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:12px;padding:10px 12px;outline:none}
+.panel input:focus{border-color:var(--acc)}
+.colors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.colors div{display:flex;flex-direction:column;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.colors input{width:100%;height:44px;border:1px solid var(--line);border-radius:12px;background:none;cursor:pointer;padding:3px}
+.panel input[type=range]{width:100%;accent-color:var(--acc)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-size:12.5px;cursor:pointer;transition:.2s}
+.seg button.on{background:#fff;color:#000;border-color:#fff}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.acts button{flex:1;padding:12px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-weight:700;font-size:13.5px;cursor:pointer;transition:.25s;white-space:nowrap}
+.acts button.main{background:var(--acc);border-color:var(--acc);color:#fff}
+.acts button:hover{transform:translateY(-2px)}
+.stage{position:relative;min-height:560px;border-radius:28px;border:1px solid var(--line);background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--eye) 10%,transparent),transparent 60%);
+  cursor:grab;touch-action:pan-y;overflow:hidden}
 .stage:active{cursor:grabbing}
-.thumbs{grid-column:1/-1;display:flex;gap:8px;overflow-x:auto;padding:10px 0 6px;scrollbar-width:none}
-.thumbs::-webkit-scrollbar{display:none}
-.thumbs button{flex:none;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);
-  cursor:pointer;font-size:12.5px;font-weight:700;white-space:nowrap;transition:.25s;color:var(--muted)}
-.thumbs button i{width:12px;height:12px;border-radius:50%}
-.thumbs button:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
-.thumbs button.on{color:#fff;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.4)}
+.stage .tag{position:absolute;left:22px;top:20px;right:22px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.stage .nm{position:absolute;left:22px;bottom:20px;right:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.stage .nm b{font-family:Unbounded;font-size:clamp(20px,2.6vw,32px);line-height:1.05;text-transform:uppercase}
+.stage .nm span{font-size:12px;color:var(--muted);text-align:right}
+.stage .corner{position:absolute;width:22px;height:22px;border:2px solid var(--eye);opacity:.6}
+.stage .c1{left:10px;top:10px;border-right:0;border-bottom:0}.stage .c2{right:10px;top:10px;border-left:0;border-bottom:0}
+.stage .c3{left:10px;bottom:10px;border-right:0;border-top:0}.stage .c4{right:10px;bottom:10px;border-left:0;border-top:0}
+
+/* мелочи */
+.prog{position:fixed;left:0;top:0;height:2px;width:0;z-index:30;background:linear-gradient(90deg,var(--acc),var(--acc2));box-shadow:0 0 10px var(--acc)}
+.glow{position:fixed;left:0;top:0;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(color-mix(in srgb,var(--eye) 12%,transparent),transparent 65%)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;z-index:40;padding:12px 18px;border-radius:999px;background:#fff;color:#000;font-weight:700;font-size:14px;transition:.4s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 
 /* ИСТОРИЯ */
 .about{padding-top:16vh;padding-bottom:8vh}
@@ -196,11 +238,9 @@ footer a{color:var(--text)}
   nav.open{opacity:1;pointer-events:auto;transform:none}
   .burger{display:block}
   .stats{display:none}
-  .show{grid-template-columns:1fr;padding-top:0}
-  .stage{height:52svh;order:-1}
-  .info p{min-height:0}
-  .drag{display:none}
-  .show .mega2{top:24svh;font-size:22vw}
+  .fgrid{grid-template-columns:1fr}
+  .stage{min-height:420px;order:-1}
+  .glow{display:none}
   .cards{grid-template-columns:1fr 1fr}
   .f{grid-template-columns:56px 1fr 34px;gap:12px}
   .f .a{display:none}
@@ -217,13 +257,13 @@ footer a{color:var(--text)}
 </script>
 </head>
 <body>
-<div class="bg"></div><div class="grain"></div>
+<div class="bg"></div><div class="grain"></div><div class="prog" id="prog"></div><div class="glow" id="glow"></div><div class="toast" id="toast"></div>
 <canvas id="gl" aria-hidden="true"></canvas>
 <div class="boot" id="boot"><div><div class="ring" style="margin:auto"></div><p>SYSTEMS ONLINE</p></div></div>
 
 <header id="hdr">
   <a class="logo" href="#top"><i></i><span id="logo"></span></a>
-  <nav id="nav"><a href="#armory">Шлемы</a><a href="#about">История</a><a href="#films">Фильмы</a><a href="#comments">Комментарии</a></nav>
+  <nav id="nav"><a href="#armory">Брони</a><a href="#forge">Кастомайзер</a><a href="#about">История</a><a href="#films">Фильмы</a><a href="#comments">Комментарии</a></nav>
   <button class="burger" id="burger" aria-label="Меню"><span></span><span></span></button>
 </header>
 
@@ -240,19 +280,43 @@ footer a{color:var(--text)}
       <div class="hero-txt reveal">
         <div class="eyebrow" id="kicker"></div>
         <p id="htext"></p>
-        <a class="btn" href="#armory">Открыть витрину <span>→</span></a><a class="btn ghost" href="#films">Все фильмы</a>
+        <a class="btn" href="#forge">Собрать свою броню <span>→</span></a><a class="btn ghost" href="#armory">Все брони</a>
       </div>
       <div class="scroll reveal"><i></i>скролль</div>
       <div class="stats reveal"><div><b id="sA"></b><span>броней</span></div><div><b id="sF"></b><span>фильмов</span></div><div><b>11</b><span>лет</span></div></div>
     </div>
   </section>
 
-  <section class="show" id="armory">
-    <div class="behind mega2" id="mega2"></div>
-    <div class="front info" id="info"></div>
-    <div class="front stage" id="stage" aria-label="Шлем, можно крутить"></div>
-    <div class="drag">← крути шлем мышкой →</div>
-    <div class="front thumbs" id="thumbs"></div>
+  <section class="gal front" id="armory">
+    <div class="gal-head">
+      <div><div class="eyebrow reveal">Арсенал</div><h2 class="reveal">Все брони</h2></div>
+      <p class="reveal">Каждая марка по номеру. Нажми «В кастомайзер», и частицы соберутся в её номер и цвета.</p>
+      <div class="arrows reveal"><button id="gprev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><button id="gnext" aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+    </div>
+    <div class="track" id="track"></div>
+    <div class="gal-bar"><i id="gbar"></i></div>
+  </section>
+
+  <section class="forge front" id="forge">
+    <div class="eyebrow reveal">Мастерская</div>
+    <h2 class="reveal">Кастомайзер</h2>
+    <div class="fgrid">
+      <div class="panel reveal">
+        <div><label>Номер брони</label><div class="chips" id="chips"></div>
+          <div class="numin">или любой от 1 до 85: <input type="number" id="numIn" min="1" max="85" inputmode="numeric"></div></div>
+        <div><label>Цвета</label><div class="colors">
+          <div><input type="color" id="cMain">корпус</div><div><input type="color" id="cAcc">вставки</div><div><input type="color" id="cGlow">свечение</div></div></div>
+        <div><label>Форма</label><div class="seg" id="shapes"></div></div>
+        <div><label>Мощность: <span id="powV"></span>%</label><input type="range" id="pow" min="20" max="100"></div>
+        <div><label>Позывной</label><input type="text" id="call" maxlength="22" placeholder="Например: NIGHT FALCON"></div>
+        <div class="acts"><button id="rnd">Случайно</button><button id="boom">Взрыв</button><button class="main" id="dl">Скачать карточку</button></div>
+      </div>
+      <div class="stage reveal" id="stage" aria-label="3D-превью, можно крутить">
+        <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+        <div class="tag"><span>STARK ARCHIVE · FORGE</span><span id="tagR"></span></div>
+        <div class="nm"><b id="nmB"></b><span id="nmS"></span></div>
+      </div>
+    </div>
   </section>
 
   <section class="about front" id="about">
@@ -402,228 +466,249 @@ footer a{color:var(--text)}
 </script>
 
 <script type="module">
-// ---------- 3D: витрина шлемов ----------
-// Шлемы собираются из простых фигур прямо в коде. Это авторские концепты в цветах каждой брони.
+// ---------- 3D: облако частиц, которое собирается в номер брони и другие фигуры ----------
 import * as THREE from "three";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const S = window.SITE, A = S.armors, esc = window.esc, $ = id => document.getElementById(id);
-const canvas = $("gl"), boot = $("boot");
+const canvas = $("gl"), boot = $("boot"), root = document.documentElement;
+const mobile = () => innerWidth < 900;
+const toast = t => { const el = $("toast"); el.textContent = t; el.classList.add("on"); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("on"), 1800); };
+
+// римские цифры -> число (Mark XLII -> 42)
+const roman = s => { const v = { I: 1, V: 5, X: 10, L: 50, C: 100 }; let n = 0; s = (s || "").toUpperCase();
+  for (let i = 0; i < s.length; i++) { const a = v[s[i]] || 0, b = v[s[i + 1]] || 0; n += a < b ? -a : a; } return n; };
+A.forEach(a => a.n = a.n || roman((a.mark || "").split(" ").pop()) || 1);
+
+// ---------- галерея ----------
+const track = $("track");
+track.innerHTML = A.map((a, i) => `<article class="mk reveal" style="--c1:${a.main};--c2:${a.face};--c3:${a.eye}">
+  <div class="big">${a.img ? `<img src="${esc(a.img)}" alt="${esc(a.mark)}" loading="lazy">` : a.n}</div>
+  <h3>${esc(a.mark)}</h3><div class="fl">${esc(a.film)} · ${a.year}</div><p>${esc(a.text)}</p>
+  <div class="row"><div class="dots"><i style="background:${a.main}"></i><i style="background:${a.face}"></i><i style="background:${a.eye}"></i></div>
+  <button data-i="${i}">В кастомайзер →</button></div></article>`).join("");
+const io2 = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add("in")), { threshold: .1 });
+track.querySelectorAll(".reveal").forEach(el => io2.observe(el));
+const step = () => track.querySelector(".mk").offsetWidth + 16;
+$("gprev").onclick = () => track.scrollBy({ left: -step(), behavior: "smooth" });
+$("gnext").onclick = () => track.scrollBy({ left: step(), behavior: "smooth" });
+track.addEventListener("scroll", () => { const m = track.scrollWidth - track.clientWidth; $("gbar").style.width = (20 + 80 * (m ? track.scrollLeft / m : 1)) + "%"; }, { passive: true });
+// наклон карточек за мышкой
+if (matchMedia("(hover:hover)").matches) track.querySelectorAll(".mk").forEach(c => {
+  c.addEventListener("pointermove", e => { const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    c.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-4px)`; });
+  c.addEventListener("pointerleave", () => c.style.transform = "");
+});
+track.querySelectorAll("button[data-i]").forEach(b => b.onclick = () => { fromArmor(A[+b.dataset.i]); $("forge").scrollIntoView({ behavior: "smooth" }); });
+
+// ---------- кастомайзер: состояние ----------
+const SHAPES = [["num", "Номер"], ["core", "Ядро"], ["sphere", "Сфера"], ["helix", "Спираль"], ["knot", "Узел"], ["wave", "Волна"]];
+const def = A.find(a => a.n === 3) || A[0];
+let st = { n: def.n, main: def.main, acc: def.face, glow: def.eye, shape: "num", pow: 70, call: "" };
+try { st = { ...st, ...JSON.parse(localStorage.getItem("im_forge") || "{}") }; } catch {}
+const save = () => { try { localStorage.setItem("im_forge", JSON.stringify(st)); } catch {} };
+$("chips").innerHTML = A.map(a => `<button data-n="${a.n}">${a.n}</button>`).join("");
+$("shapes").innerHTML = SHAPES.map(([k, t]) => `<button data-s="${k}">${t}</button>`).join("");
+const armorOf = n => A.find(a => a.n === n);
+function ui() {
+  $("chips").querySelectorAll("button").forEach(b => b.classList.toggle("on", +b.dataset.n === st.n));
+  $("shapes").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.s === st.shape));
+  $("numIn").value = st.n; $("cMain").value = st.main; $("cAcc").value = st.acc; $("cGlow").value = st.glow;
+  $("pow").value = st.pow; $("powV").textContent = st.pow; $("call").value = st.call;
+  const a = armorOf(st.n);
+  $("nmB").textContent = st.call || `Mark ${st.n}`;
+  $("nmS").innerHTML = a ? `${esc(a.mark)}<br>${esc(a.film)} · ${a.year}` : `Mark ${st.n}<br>своя сборка`;
+  $("tagR").textContent = `мощность ${st.pow}%`;
+  root.style.setProperty("--acc", st.main); root.style.setProperty("--acc2", st.acc); root.style.setProperty("--eye", st.glow);
+  const c = new THREE.Color(st.main), h = {}; c.getHSL(h); if (h.l < .15 || h.s < .15) root.style.setProperty("--acc", "#c0151f");
+}
+function apply(shapeChanged) { ui(); save(); setColors(); if (shapeChanged) morph(); }
+function fromArmor(a) { st = { ...st, n: a.n, main: a.main, acc: a.face, glow: a.eye, shape: "num" }; apply(true); toast(`${a.mark} загружен`); }
+$("chips").onclick = e => { const b = e.target.closest("button"); if (b) { const a = armorOf(+b.dataset.n); a ? fromArmor(a) : (st.n = +b.dataset.n, apply(true)); } };
+$("numIn").onchange = () => { const n = Math.max(1, Math.min(85, Math.round(+$("numIn").value || 1))); st.n = n; st.shape = "num"; apply(true); };
+$("shapes").onclick = e => { const b = e.target.closest("button"); if (b) { st.shape = b.dataset.s; apply(true); } };
+for (const [id, k] of [["cMain", "main"], ["cAcc", "acc"], ["cGlow", "glow"]]) $(id).oninput = () => { st[k] = $(id).value; apply(false); };
+$("pow").oninput = () => { st.pow = +$("pow").value; apply(false); };
+$("call").oninput = () => { st.call = $("call").value.replace(/[<>]/g, ""); apply(false); };
+$("rnd").onclick = () => {
+  const hue = Math.random(), col = (h, s, l) => "#" + new THREE.Color().setHSL(h % 1, s, l).getHexString();
+  st = { ...st, n: 1 + Math.floor(Math.random() * 85), main: col(hue, .75, .38), acc: col(hue + .12 + Math.random() * .3, .7, .55), glow: col(.45 + Math.random() * .2, .9, .7),
+    shape: SHAPES[Math.floor(Math.random() * SHAPES.length)][0], pow: 40 + Math.floor(Math.random() * 61) };
+  apply(true); toast("Случайная броня собрана");
+};
+$("boom").onclick = () => explode();
+
+// ---------- 3D ----------
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" }); }
 catch { boot.classList.add("done"); canvas.remove(); }
-const mobile = () => innerWidth < 900;
+const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(35, 1, .1, 100);
+camera.position.set(0, 0, 8);
+if (renderer) renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(32, 1, .1, 100);
-camera.position.set(0, 0, 7.4);
-if (renderer) {
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
-  const pm = new THREE.PMREMGenerator(renderer);
-  scene.environment = pm.fromScene(new RoomEnvironment(renderer), .04).texture;
-}
-const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(3, 4, 5); scene.add(key);
-const rim = new THREE.DirectionalLight(0xff3b30, 3); rim.position.set(-4, 1.5, -3); scene.add(rim);
-const rim2 = new THREE.DirectionalLight(0x7ee8ff, 1.6); rim2.position.set(4, -1, -3); scene.add(rim2);
-scene.add(new THREE.AmbientLight(0xffffff, .15));
-
-// форма шлема: из точки на сфере делаем точку на поверхности шлема
-function shape(v, P) {
-  const len = v.length(); let x = v.x / len, y = v.y / len, z = v.z / len;
-  x *= .82; z *= 1.0; if (y > 0) { y *= .92; x *= 1 - .08 * y; }
-  if (y < 0) { const t = Math.min(1, -y); const tp = 1 - (P.jaw ?? .32) * t * t; x *= tp; z = z > 0 ? z * (1 - .05 * t) + .16 * t * t : z * tp * .95; y *= 1.12; }
-  if (z < 0) { z *= 1.1; y += .06 * -z; }
-  if (z > 0) x *= 1 - .1 * z * z;                         // лицо уже затылка, профиль клином
-  if (P.boxy) { const m = Math.max(Math.abs(x) / .82, Math.abs(y), Math.abs(z)) || 1; const b = P.boxy; x = x * (1 - b) + x / m * .9 * b; y = y * (1 - b) + y / m * .9 * b; z = z * (1 - b) + z / m * .9 * b; }
-  v.set(x * len, y * len, z * len); return v;
-}
-function bend(geo, P, fn) {
-  const p = geo.attributes.position, v = new THREE.Vector3();
-  for (let i = 0; i < p.count; i++) {
-    v.fromBufferAttribute(p, i);
-    if (fn) { const r = v.length(), az = Math.atan2(v.x, v.z), el = Math.asin(THREE.MathUtils.clamp(v.y / r, -1, 1)); const [a2, e2] = fn(az, el);
-      v.set(r * Math.cos(e2) * Math.sin(a2), r * Math.sin(e2), r * Math.cos(e2) * Math.cos(a2)); }
-    shape(v, P); p.setXYZ(i, v.x, v.y, v.z);
-  }
-  geo.computeVertexNormals(); return geo;
-}
-// часть сферы спереди: az — ширина (радианы), el — от/до по высоте
-const front = (r, az, el0, el1, s = 96) => new THREE.SphereGeometry(r, s, Math.max(8, s / 2), Math.PI / 2 - az / 2, az, Math.PI / 2 - el1, el1 - el0);
-const metal = (c, r = .26) => new THREE.MeshPhysicalMaterial({ color: c, metalness: .92, roughness: r, clearcoat: .7, clearcoatRoughness: .15 });
-const glowM = c => new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(1.6), toneMapped: false });
-const haloM = c => new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: .28, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-function surf(P, az, el, r) { return shape(new THREE.Vector3(r * Math.cos(el) * Math.sin(az), r * Math.sin(el), r * Math.cos(el) * Math.cos(az)), P); }
-
-function buildHelmet(P) {
-  // авторский шлем из граненых пластин брони
-  const g = new THREE.Group(), facet = m => m;
-  const main = facet(metal(P.main)), face = facet(metal(P.face, .22)), trim = facet(metal(P.trim, .3)), dark = facet(metal("#141416", .5)), glass = metal("#07080a", .06), gun = metal("#2b2e34", .32);
-  const add = (geo, m) => { const o = new THREE.Mesh(geo, m); g.add(o); return o; };
-  const sph = (r, a0, a1, e0, e1, ws = 64, hs = 24) => new THREE.SphereGeometry(r, ws, hs, Math.PI / 2 - a1, a1 - a0, Math.PI / 2 - e1, e1 - e0);
-  add(bend(new THREE.SphereGeometry(1, 128, 96), P), main);                               // корпус (грани)
-  add(bend(new THREE.SphereGeometry(.985, 64, 48), P), dark);                           // подложка, видна в щелях
-  // нависающий лоб с острым мысом по центру
-  add(bend(sph(1.075, -1.25, 1.25, .26, .62, 96, 16), P, (a, e) => [a, e + (e < .4 ? (.12 - Math.abs(a) * .1) * (1 - (e - .26) / .14) : 0) - .02]), face);
-  add(bend(sph(1.09, -.09, .09, .3, 1.45, 4, 48), P), trim);                            // гребень спереди
-  add(bend(new THREE.SphereGeometry(1.06, 4, 20, -Math.PI / 2 - .09, .18, .1, 1.7), P), trim); // гребень сзади
-  // визор, обёрнутый вокруг лица
-  const V = P.visor || "band", vk = V === "v" ? (a, e) => [a, e + Math.abs(a) * .18 - .05] : null;
-  add(bend(sph(1.045, -1.3, 1.3, .02, .27, 48, 4), P, vk), glass);
-  const vis = [];
-  if (V === "band" || V === "v") vis.push(sph(1.055, -1.05, 1.05, .12, .165, 48, 2));
-  if (V === "triple") [.06, .125, .19].forEach(e => vis.push(sph(1.055, -.95 + e, .95 - e, e, e + .028, 40, 2)));
-  if (V === "grill") [.05, .1, .15, .2].forEach(e => vis.push(sph(1.055, -.7, .7, e, e + .02, 32, 2)));
-  vis.forEach(v => { add(bend(v, P, vk), glowM(P.eye)); const h = bend(v.clone(), P, vk); h.scale(1.02, 1.08, 1.02); add(h, haloM(P.eye)); });
-  // щёчные пластины
-  for (const s of [-1, 1]) {
-    const a0 = s > 0 ? .45 : -1.5, a1 = s > 0 ? 1.5 : -.45;
-    add(bend(sph(1.06, a0, a1, -.78, -.02, 48, 32), P, (a, e) => [a, e - (Math.abs(a) - .45) * .12]), gun);
-    for (let k = 0; k < 3; k++) {                                                        // прорези на щеках
-      const m = add(new THREE.BoxGeometry(.2, .022, .06), dark);
-      m.position.copy(surf(P, s * (.78 + k * .14), -.32 - k * .05, 1.08)); m.lookAt(m.position.clone().multiplyScalar(2)); m.rotateZ(s * .5);
-    }
-  }
-  // дыхательный блок, выступает вперёд клином
-  const snout = bend(sph(1.075, -.42, .42, -.95, -.3, 48, 32), P, (a, e) => [a * (1 - (-.3 - e) * .35), e]);
-  add(snout, gun);
-  for (let k = 0; k < 5; k++) add(bend(sph(1.09, -.3 + k * .02, .3 - k * .02, -.45 - k * .09, -.435 - k * .09, 24, 1), P), k % 2 ? dark : glowM(P.eye));
-  add(bend(sph(1.06, -.16, .16, -1.32, -.95, 24, 16), P), trim);                          // подбородок
-  // боковые модули с кольцом и плавником назад
-  for (const s of [-1, 1]) {
-    const pos = surf(P, s * Math.PI / 2, -.02, 1.0), o = new THREE.Group(); o.position.copy(pos); o.lookAt(pos.clone().multiplyScalar(2));
-    const d = new THREE.Mesh(new THREE.CylinderGeometry(.23, .28, .12, 48), trim); d.rotation.x = Math.PI / 2; o.add(d);
-    const r = new THREE.Mesh(new THREE.TorusGeometry(.14, .016, 8, 48), glowM(P.eye)); r.position.z = .065; o.add(r);
-    const c = new THREE.Mesh(new THREE.CylinderGeometry(.08, .08, .14, 8), dark); c.rotation.x = Math.PI / 2; o.add(c);
-    g.add(o);
-    const fin = new THREE.Mesh(new THREE.BoxGeometry(.05, .12, .5), trim);
-    fin.position.copy(surf(P, s * 1.95, .12, 1.03)); fin.rotation.set(-.35, s * -.25, 0); g.add(fin);
-  }
-  // пластины на затылке
-  for (let k = 0; k < 3; k++) add(new THREE.SphereGeometry(1.03 + k * .012, 20, 2, -Math.PI / 2 - .9 + k * .1, 1.8 - k * .2, Math.PI / 2 + .2 + k * .22, .16).applyMatrix4(new THREE.Matrix4()), trim).geometry = bend(new THREE.SphereGeometry(1.03 + k * .012, 20, 2, -Math.PI / 2 - .9 + k * .1, 1.8 - k * .2, Math.PI / 2 + .2 + k * .22, .16), P);
-  // шея
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(.42, .52, .32, 64, 1, true), dark); neck.position.y = -1.02; g.add(neck);
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(.47, .03, 12, 80), trim); ring.rotation.x = Math.PI / 2; ring.position.y = -.9; g.add(ring);
-  return g;
-}
-
-// подставка с подсветкой и искры
-const holder = new THREE.Group(); scene.add(holder);
-const pivot = new THREE.Group(); holder.add(pivot);
-const base = new THREE.Mesh(new THREE.TorusGeometry(1.0, .01, 8, 160), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, toneMapped: false }));
-base.rotation.x = Math.PI / 2; base.position.y = -1.2; holder.add(base);
-const disc = new THREE.Mesh(new THREE.CircleGeometry(1.0, 64), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
-disc.rotation.x = -Math.PI / 2; disc.position.y = -1.21; holder.add(disc);
-const N = 420, pg = new THREE.BufferGeometry(), pp = new Float32Array(N * 3), ps = new Float32Array(N);
-for (let i = 0; i < N; i++) { pp[i * 3] = (Math.random() - .5) * 14; pp[i * 3 + 1] = (Math.random() - .5) * 9; pp[i * 3 + 2] = (Math.random() - .5) * 6 - 1; ps[i] = .2 + Math.random() * .8; }
-pg.setAttribute("position", new THREE.BufferAttribute(pp, 3));
-const embers = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xff7a3a, size: .03, transparent: true, opacity: .7, blending: THREE.AdditiveBlending, depthWrite: false }));
-scene.add(embers);
-
-// ---------- витрина ----------
-let cur = 0, helmet = null, swap = 0, pending = null;
-const info = $("info"), thumbs = $("thumbs"), root = document.documentElement;
-thumbs.innerHTML = A.map((a, i) => `<button data-i="${i}"><i style="background:linear-gradient(135deg,${a.main} 50%,${a.face} 50%)"></i>${esc(a.mark)}</button>`).join("");
-thumbs.querySelectorAll("button").forEach(b => b.onclick = () => select(+b.dataset.i));
-const ARR = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="${d ? "M9 5l7 7-7 7" : "M15 5l-7 7 7 7"}"/></svg>`;
-function paint(i) {
-  const a = A[i];
-  info.innerHTML = `<div class="fade"><div class="num">${String(i + 1).padStart(2, "0")} / ${String(A.length).padStart(2, "0")}</div>
-    <h3>${esc(a.mark)}</h3><div class="film">${esc(a.film)} · ${a.year}</div><p>${esc(a.text)}</p>
-    <div class="swatch"><i style="background:${a.main}"></i><i style="background:${a.face}"></i><i style="background:${a.eye}"></i>цвета брони</div>
-    <div class="ctrl"><button id="prev" aria-label="Предыдущий">${ARR(0)}</button><button id="next" aria-label="Следующий">${ARR(1)}</button></div></div>`;
-  $("prev").onclick = () => select(cur - 1); $("next").onclick = () => select(cur + 1);
-  $("mega2").textContent = a.mark.toUpperCase();
-  thumbs.querySelectorAll("button").forEach((b, k) => b.classList.toggle("on", k === i));
-  const tb = thumbs.children[i]; if (tb) thumbs.scrollTo({ left: tb.offsetLeft - thumbs.clientWidth / 2 + tb.offsetWidth / 2, behavior: "smooth" });
-  root.style.setProperty("--acc", a.main === a.trim || /Mark XLII$/.test(a.mark) ? a.face : a.main);
-  root.style.setProperty("--acc2", a.face); root.style.setProperty("--eye", a.eye);
-  // если главный цвет серый, берём акцент чуть ярче
-  const c = new THREE.Color(a.main), hsl = {}; c.getHSL(hsl); if (hsl.s < .2) root.style.setProperty("--acc", "#c0151f");
-}
-function select(i) {
-  i = (i + A.length) % A.length; if (i === cur && helmet) return;
-  cur = i; paint(i); pending = i; swap = performance.now();
-}
-function place(i) {
-  if (helmet) { pivot.remove(helmet); helmet.traverse(o => { o.geometry?.dispose(); o.material?.dispose?.(); }); }
-  helmet = buildHelmet(A[i]); pivot.add(helmet);
-  rim.color.set(A[i].main); base.material.color.set(A[i].eye); disc.material.color.set(A[i].eye);
-}
-const start = A.findIndex(a => a.mark === "Mark III");
-cur = start < 0 ? 0 : start; paint(cur);
-if (renderer) place(cur);
-addEventListener("keydown", e => { const r = $("armory").getBoundingClientRect(); if (r.top < innerHeight / 2 && r.bottom > innerHeight / 2) { if (e.key === "ArrowRight") select(cur + 1); if (e.key === "ArrowLeft") select(cur - 1); } });
-
-// вращение мышкой/пальцем
-let drag = null, spin = 0, vel = 0, mx = 0, my = 0;
-const stage = $("stage");
-stage.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, h: false }; vel = 0; });
-addEventListener("pointermove", e => {
-  mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5;
-  if (!drag) return; const dx = e.clientX - drag.x;
-  if (!drag.h && Math.abs(dx) > 6) drag.h = true;
-  if (drag.h) { vel = dx * .01; spin += vel; drag.x = e.clientX; }
+const N = mobile() ? 6000 : 11000;
+const pos = new Float32Array(N * 3), tgt = new Float32Array(N * 3), vel = new Float32Array(N * 3), col = new Float32Array(N * 3), tcol = new Float32Array(N * 3), seed = new Float32Array(N), mix = new Float32Array(N);
+for (let i = 0; i < N; i++) { seed[i] = Math.random(); mix[i] = Math.random(); const r = 6 + Math.random() * 6, a = Math.random() * 6.283, b = Math.acos(2 * Math.random() - 1);
+  pos[i * 3] = r * Math.sin(b) * Math.cos(a); pos[i * 3 + 1] = r * Math.cos(b); pos[i * 3 + 2] = r * Math.sin(b) * Math.sin(a); }
+const geo = new THREE.BufferGeometry();
+geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+geo.setAttribute("seed", new THREE.BufferAttribute(seed, 1));
+const mat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uSize: { value: 46 * Math.min(devicePixelRatio, 2) }, uTime: { value: 0 }, uPow: { value: .7 } },
+  vertexShader: `attribute float seed; attribute vec3 color; varying vec3 vC; varying float vA; uniform float uSize, uTime, uPow;
+    void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv;
+      float tw = .55 + .45 * sin(uTime * (1.5 + seed * 3.0) + seed * 40.0);
+      gl_PointSize = uSize * (.35 + seed * .65) * (.6 + .6 * uPow) / -mv.z; vC = color; vA = tw * (.45 + .55 * uPow); }`,
+  fragmentShader: `varying vec3 vC; varying float vA; void main(){ float d = length(gl_PointCoord - .5); if (d > .5) discard;
+    float a = smoothstep(.5, 0., d); gl_FragColor = vec4(vC * (1.0 + a * .8), a * vA); }`,
 });
-addEventListener("pointerup", () => drag = null); addEventListener("pointercancel", () => drag = null);
-let sx = 0; stage.addEventListener("touchstart", e => sx = e.touches[0].clientX, { passive: true });
-stage.addEventListener("touchend", e => { const d = e.changedTouches[0].clientX - sx; if (Math.abs(d) > 70 && Math.abs(vel) < .05) select(cur + (d < 0 ? 1 : -1)); }, { passive: true });
+const cloud = new THREE.Points(geo, mat);
+const holder = new THREE.Group(); holder.add(cloud); scene.add(holder);
+// дальний пояс искр
+const dN = 700, dg = new THREE.BufferGeometry(), dp = new Float32Array(dN * 3);
+for (let i = 0; i < dN; i++) { dp[i * 3] = (Math.random() - .5) * 26; dp[i * 3 + 1] = (Math.random() - .5) * 16; dp[i * 3 + 2] = -4 - Math.random() * 8; }
+dg.setAttribute("position", new THREE.BufferAttribute(dp, 3));
+const dust = new THREE.Points(dg, new THREE.PointsMaterial({ color: 0xff8a4a, size: .035, transparent: true, opacity: .55, blending: THREE.AdditiveBlending, depthWrite: false }));
+scene.add(dust);
 
-// куда ставить шлем в зависимости от скролла
+// фигуры
+const R = Math.random;
+const shapes = {
+  sphere(i) { const k = i + .5, phi = Math.acos(1 - 2 * k / N), th = Math.PI * (1 + Math.sqrt(5)) * k, r = 1.7 + (R() - .5) * .08; return [r * Math.sin(phi) * Math.cos(th), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(th)]; },
+  core(i) { const u = i / N; if (u < .2) { const r = Math.sqrt(R()) * .45, a = R() * 6.283; return [r * Math.cos(a), r * Math.sin(a), (R() - .5) * .1]; }
+    const rings = [.75, 1.1, 1.45, 1.85], ri = rings[Math.floor(R() * rings.length)], a = R() * 6.283, w = (R() - .5) * .06;
+    const seg = Math.floor(a / (6.283 / 10)) % 2 && ri === 1.1 ? .92 : 1; return [(ri + w) * seg * Math.cos(a), (ri + w) * seg * Math.sin(a), (R() - .5) * .18 * (ri / 1.85)]; },
+  helix(i) { const u = i / N, side = i % 2, t = u * 6.283 * 3.2, r = 1 + (R() - .5) * .1, y = (u - .5) * 4.4;
+    if (R() < .12) { const a = t, f = R(); return [Math.cos(a) * (2 * f - 1), y, Math.sin(a) * (2 * f - 1)]; }
+    return [r * Math.cos(t + side * Math.PI), y, r * Math.sin(t + side * Math.PI)]; },
+  knot(i) { const t = i / N * 6.283, p = 2, q = 3, r = .9 * (2 + Math.cos(q * t)) * .55; const tube = .18 * Math.sqrt(R()), a = R() * 6.283;
+    return [r * Math.cos(p * t) + tube * Math.cos(a), .9 * Math.sin(q * t) * .55 * 1.6 + tube * Math.sin(a), r * Math.sin(p * t) + tube * Math.cos(a + 1)]; },
+  wave(i) { const g = Math.ceil(Math.sqrt(N)), x = (i % g) / g - .5, z = Math.floor(i / g) / g - .5; return [x * 4.6, 0, z * 4.6]; },
+};
+let numPts = null, numFor = -1;
+function numberPoints(n) {
+  if (numFor === n && numPts) return numPts;
+  const c = document.createElement("canvas"), W = 640, H = 320; c.width = W; c.height = H; const x = c.getContext("2d");
+  x.fillStyle = "#fff"; x.textAlign = "center"; x.textBaseline = "middle"; x.font = `800 ${String(n).length > 1 ? 250 : 290}px Unbounded, sans-serif`;
+  x.fillText(String(n), W / 2, H / 2 + 10);
+  const d = x.getImageData(0, 0, W, H).data, pts = [];
+  for (let yy = 0; yy < H; yy += 2) for (let xx = 0; xx < W; xx += 2) if (d[(yy * W + xx) * 4 + 3] > 128) pts.push([(xx / W - .5) * 4.6, -(yy / H - .5) * 2.3]);
+  numPts = pts; numFor = n; return pts;
+}
+let cur = "num";
+function morph() {
+  cur = st.shape;
+  const pts = cur === "num" ? numberPoints(st.n) : null;
+  for (let i = 0; i < N; i++) {
+    let p;
+    if (pts) { if (i < N * .9) { const q = pts[Math.floor(R() * pts.length)]; p = [q[0] + (R() - .5) * .03, q[1] + (R() - .5) * .03, (R() - .5) * .35]; }
+      else { const a = R() * 6.283, r = 2.6 + R() * .5; p = [r * Math.cos(a), r * Math.sin(a) * .45, (R() - .5) * .4]; } }
+    else p = shapes[cur](i);
+    tgt[i * 3] = p[0]; tgt[i * 3 + 1] = p[1]; tgt[i * 3 + 2] = p[2];
+  }
+}
+function setColors() {
+  const a = new THREE.Color(st.main), b = new THREE.Color(st.acc), g = new THREE.Color(st.glow), t = new THREE.Color();
+  for (let i = 0; i < N; i++) { const m = mix[i]; m < .5 ? t.copy(a) : m < .82 ? t.copy(b) : t.copy(g).multiplyScalar(1.3);
+    tcol[i * 3] = t.r; tcol[i * 3 + 1] = t.g; tcol[i * 3 + 2] = t.b; }
+}
+function explode() { for (let i = 0; i < N; i++) { const x = pos[i * 3], y = pos[i * 3 + 1], z = pos[i * 3 + 2], l = Math.hypot(x, y, z) || 1, f = .25 + R() * .45;
+  vel[i * 3] += x / l * f; vel[i * 3 + 1] += y / l * f; vel[i * 3 + 2] += z / l * f; } }
+
+// вращение мышкой в мастерской
+const stage = $("stage"); let drag = null, rotY = 0, rotX = 0, spin = 0, mx = 0, my = 0;
+stage.addEventListener("pointerdown", e => drag = { x: e.clientX, y: e.clientY });
+addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5;
+  const gl = $("glow"); gl.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+  if (drag) { rotY += (e.clientX - drag.x) * .008; rotX += (e.clientY - drag.y) * .005; rotX = Math.max(-.8, Math.min(.8, rotX)); drag.x = e.clientX; drag.y = e.clientY; } });
+addEventListener("pointerup", () => drag = null); addEventListener("pointercancel", () => drag = null);
+stage.addEventListener("dblclick", explode);
+
+// где стоит облако: в hero по центру, в мастерской внутри окна превью
 const clamp = x => Math.min(1, Math.max(0, x)), ease = t => t * t * (3 - 2 * t);
-function target() {
-  const vh = innerHeight, sh = $("armory").getBoundingClientRect(), m = mobile();
-  const t1 = ease(clamp(1 - sh.top / vh));                 // из hero в витрину
-  const t2 = ease(clamp(-sh.bottom / vh * 1.6 + 1.6 * .62)); // уход из витрины
-  const st = stage.getBoundingClientRect();
-  // центр сцены на экране в мировых координатах
+function place() {
+  const vh = innerHeight, fr = $("forge").getBoundingClientRect(), sr = stage.getBoundingClientRect();
   const h = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z, w = h * camera.aspect;
   const toW = (px, py) => [(px / innerWidth - .5) * w, -(py / vh - .5) * h];
-  const [hx, hy] = toW(innerWidth / 2, vh * (m ? .42 : .47));
-  const [sx2, sy2] = toW(st.left + st.width / 2, st.top + st.height / 2 + sh.top * 0);
-  const sYlive = toW(0, st.top + st.height / 2)[1];
-  let x = hx + (sx2 - hx) * t1, y = hy + (sYlive - hy) * t1;
-  if (t1 >= 1 || sh.top < 0) y = sYlive;
-  let s = (m ? .95 : 1.25) + ((m ? .72 : 1.0) - (m ? .95 : 1.25)) * t1;
-  return { x, y, s, show: t1, out: clamp(-sh.bottom / vh + .35) };
+  const hero = toW(innerWidth / 2, vh * (mobile() ? .4 : .46)), sc = toW(sr.left + sr.width / 2, sr.top + sr.height / 2);
+  const t = ease(clamp(1 - (sr.top + sr.height / 2) / vh * 1.1 + .55));          // насколько окно мастерской в кадре
+  const k = ease(clamp(1 - Math.abs(sr.top + sr.height / 2 - vh / 2) / vh * 1.4)); // мастерская в центре экрана
+  const heroVis = clamp(1 + $("hero").getBoundingClientRect().bottom / vh - 1 + .2);
+  const sHero = mobile() ? .62 : 1.05, sStage = Math.min(sr.width / innerWidth * w / 5.2, sr.height / vh * h / 4.2);
+  return { x: hero[0] + (sc[0] - hero[0]) * t, y: hero[1] + (sc[1] - hero[1]) * t, s: sHero + (sStage - sHero) * t, a: Math.max(heroVis, k, .12), forge: k };
 }
 
-let size = [0, 0];
-function resize() {
-  const w = innerWidth, h = innerHeight; if (w === size[0] && h === size[1]) return; size = [w, h];
-  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
-}
+// автоматическая смена фигур на первом экране, пока пользователь не трогал кастомайзер
+let touched = false, auto = 0;
+["chips", "shapes", "numIn", "rnd", "pow", "cMain", "cAcc", "cGlow", "call"].forEach(id => $(id).addEventListener("pointerdown", () => touched = true));
+
+let size = [0, 0], P = null, first = true;
 const clock = new THREE.Clock();
-let first = true, pos = null;
 function frame() {
   requestAnimationFrame(frame);
   if (document.hidden) return;
-  resize();
-  const t = clock.getElapsedTime(), T = target();
-  if (!pos) pos = { ...T };
-  for (const k of ["x", "y", "s"]) pos[k] += (T[k] - pos[k]) * .12;
-  holder.position.set(pos.x, pos.y, 0);
-  // смена шлема: сжимаем, крутим, меняем, разжимаем
-  let k = 1;
-  if (swap) { const p = (performance.now() - swap) / 700; if (p >= .5 && pending !== null) { place(pending); pending = null; }
-    k = p < .5 ? 1 - ease(p * 2) * .7 : .3 + ease((p - .5) * 2) * .7; spin += p < 1 ? .09 : 0; if (p >= 1) swap = 0; }
-  holder.scale.setScalar(pos.s * (.7 + .3 * k) * (1 - T.out * .35));
-  if (!drag) { vel *= .94; spin += vel + (T.show > .5 ? .004 : 0); }
-  pivot.rotation.y = spin + Math.sin(t * .5) * .25 * (1 - T.show) + mx * .5;
-  pivot.rotation.x = my * .25 + Math.sin(t * .7) * .04;
-  pivot.position.y = Math.sin(t * 1.2) * .05;
-  base.material.opacity = disc.material.opacity * 0 + .8 * T.show; disc.material.opacity = .08 * T.show;
-  base.scale.setScalar(1 + Math.sin(t * 2) * .02);
-  canvas.style.opacity = 1 - T.out * .85;
-  const p = embers.geometry.attributes.position;
-  for (let i = 0; i < N; i++) { let y = p.getY(i) + .004 * ps[i]; if (y > 4.5) y = -4.5; p.setY(i, y); }
-  p.needsUpdate = true; embers.rotation.y = t * .02;
+  const W = innerWidth, H = innerHeight;
+  if (W !== size[0] || H !== size[1]) { size = [W, H]; renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); }
+  const t = clock.getElapsedTime(), T = place();
+  if (!P) P = { ...T };
+  for (const k of ["x", "y", "s", "a"]) P[k] += (T[k] - P[k]) * .1;
+  holder.position.set(P.x, P.y, 0); holder.scale.setScalar(P.s);
+  canvas.style.opacity = P.a;
+  // показ на первом экране: номер -> ядро -> сфера -> спираль ...
+  if (!touched && T.forge < .3 && t - auto > 4.5) { auto = t; const order = ["num", "core", "sphere", "helix", "knot"]; st.shape = order[(order.indexOf(st.shape) + 1) % order.length]; morph(); ui(); }
+  const ease2 = .055;
+  for (let i = 0; i < N * 3; i++) {
+    vel[i] *= .9; pos[i] += vel[i] + (tgt[i] - pos[i]) * ease2;
+    col[i] += (tcol[i] - col[i]) * .06;
+  }
+  geo.attributes.position.needsUpdate = true; geo.attributes.color.needsUpdate = true;
+  mat.uniforms.uTime.value = t; mat.uniforms.uPow.value += (st.pow / 100 - mat.uniforms.uPow.value) * .1;
+  if (!drag) { rotY *= .96; rotX *= .96; }
+  const flat = cur === "num" || cur === "core";
+  spin += flat ? 0 : .004 * (.5 + st.pow / 100);
+  cloud.rotation.y = spin + rotY + (flat ? Math.sin(t * .6) * .35 : 0) + mx * .4;
+  cloud.rotation.x = rotX + my * .25 + (cur === "wave" ? .9 : 0);
+  if (cur === "wave") for (let i = 0; i < N; i++) tgt[i * 3 + 1] = Math.sin(tgt[i * 3] * 1.6 + t * 1.8) * .35 + Math.cos(tgt[i * 3 + 2] * 1.3 + t * 1.2) * .25;
+  if (cur === "core") cloud.rotation.z = t * .15;
+  else cloud.rotation.z *= .95;
+  dust.rotation.y = t * .01;
   renderer.render(scene, camera);
   if (first) { first = false; setTimeout(() => boot.classList.add("done"), 250); }
 }
-if (renderer) frame();
+
+// карточка брони в PNG
+$("dl").onclick = async () => {
+  if (!renderer) return;
+  renderer.render(scene, camera);
+  const sr = stage.getBoundingClientRect(), dpr = renderer.getPixelRatio();
+  const c = document.createElement("canvas"); c.width = 1080; c.height = 1350; const x = c.getContext("2d");
+  const g = x.createLinearGradient(0, 0, 0, 1350); g.addColorStop(0, "#0b0b10"); g.addColorStop(1, "#050507"); x.fillStyle = g; x.fillRect(0, 0, 1080, 1350);
+  const rg = x.createRadialGradient(540, 560, 40, 540, 560, 600); rg.addColorStop(0, st.main + "55"); rg.addColorStop(1, "transparent"); x.fillStyle = rg; x.fillRect(0, 0, 1080, 1350);
+  const sw = sr.width * dpr, sh = sr.height * dpr, k = Math.min(1000 / sw, 860 / sh);
+  x.drawImage(canvas, sr.left * dpr, sr.top * dpr, sw, sh, 540 - sw * k / 2, 140 + (860 - sh * k) / 2, sw * k, sh * k);
+  x.strokeStyle = st.glow; x.globalAlpha = .6; x.lineWidth = 4;
+  [[40, 40, 1, 1], [1040, 40, -1, 1], [40, 1310, 1, -1], [1040, 1310, -1, -1]].forEach(([a, b, sx, sy]) => { x.beginPath(); x.moveTo(a, b + 50 * sy); x.lineTo(a, b); x.lineTo(a + 50 * sx, b); x.stroke(); });
+  x.globalAlpha = 1; x.fillStyle = "#8d8a86"; x.font = "600 24px Manrope, sans-serif"; x.fillText("STARK ARCHIVE · FORGE", 80, 100);
+  x.textAlign = "right"; x.fillText(`мощность ${st.pow}%`, 1000, 100); x.textAlign = "left";
+  x.fillStyle = "#f3f1ee"; x.font = "800 74px Unbounded, sans-serif"; x.fillText((st.call || `Mark ${st.n}`).toUpperCase().slice(0, 22), 80, 1110, 920);
+  const a = armorOf(st.n); x.fillStyle = st.acc; x.font = "700 30px Manrope, sans-serif"; x.fillText(a ? `${a.mark} · ${a.film} · ${a.year}` : `Mark ${st.n} · своя сборка`, 80, 1165, 920);
+  [st.main, st.acc, st.glow].forEach((cc, i) => { x.fillStyle = cc; x.beginPath(); x.arc(100 + i * 60, 1240, 22, 0, 6.283); x.fill(); });
+  x.fillStyle = "#8d8a86"; x.font = "500 24px Manrope, sans-serif"; x.textAlign = "right"; x.fillText("tonerovv.github.io/ironman", 1000, 1250);
+  const link = document.createElement("a"); link.download = `mark-${st.n}.png`; link.href = c.toDataURL("image/png"); link.click();
+  toast("Карточка скачана");
+};
+
+// пасхалка: напечатай stark на клавиатуре
+let typed = "";
+addEventListener("keydown", e => { if (e.target.matches("input,textarea")) return; typed = (typed + e.key).slice(-5).toLowerCase();
+  if (typed === "stark") { explode(); toast("Протокол STARK активирован"); st.glow = "#ffffff"; apply(false); setTimeout(() => { const a = armorOf(st.n); if (a) { st.glow = a.eye; apply(false); } }, 2500); } });
+
+// полоса прокрутки
+addEventListener("scroll", () => { const m = document.documentElement.scrollHeight - innerHeight; $("prog").style.width = (m ? scrollY / m * 100 : 0) + "%"; }, { passive: true });
+
+ui(); setColors();
+document.fonts.load("800 200px Unbounded").catch(() => {}).finally(() => { morph(); if (renderer) frame(); });
 </script>
 </body>
 </html>
